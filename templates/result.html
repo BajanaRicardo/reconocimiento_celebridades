@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultados</title>
+</head>
+<body>
+    <h1>Resultados de Detección de Celebridades</h1>
+    <ul>
+        {% for face in faces %}
+            <li>
+                <strong>Felicidad:</strong> {{ face.joy_likelihood }}<br>
+                <strong>Tristeza:</strong> {{ face.sorrow_likelihood }}<br>
+                <strong>Enojo:</strong> {{ face.anger_likelihood }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
