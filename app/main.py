@@ -10,6 +10,9 @@ client = google.cloud.logging.Client()
 client.get_default_handler()
 client.setup_logging()
 
+client = storage.Client()
+vision_client = vision.ImageAnnotatorClient()
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -32,12 +35,17 @@ def upload():
                 content_type=uploaded_file.content_type
             )
 
-            # Aquí podrías realizar el reconocimiento de famosos utilizando Google Vision AI si es necesario
-            # y luego almacenar los resultados en Firestore.
+            celebrities = []
 
-            successful_upload = True
+            # Realizar el reconocimiento de famosos utilizando Google Vision AI
+            image = vision.Image(content=uploaded_file.read())
+            response = vision_client.face_detection(image=image)
 
-    return render_template('index.html', successful_upload=successful_upload)
+            for face in response.face_annotations:
+                for celebrity in face.recognized_celebrity:
+                    celebrities.append(celebrity.name)
+            return render_template('result.html', successful_upload=True, celebrities=celebrities)
+        return render_template('index.html', successful_upload=False)
 
 @app.errorhandler(500)
 def server_error(e):

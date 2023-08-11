@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Resultados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>Resultados de Reconocimiento</title>
 </head>
 <body>
-    <h1>Resultados de Detección de Celebridades</h1>
-    <ul>
-        {% for face in faces %}
-            <li>
-                <strong>Felicidad:</strong> {{ face.joy_likelihood }}<br>
-                <strong>Tristeza:</strong> {{ face.sorrow_likelihood }}<br>
-                <strong>Enojo:</strong> {{ face.anger_likelihood }}
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="bg-primary py-2">
+        <h2 class="text-white text-center">RESULTADOS DE RECONOCIMIENTO</h2>
+    </div>
+    <div class="container">
+        {% block content %}
+            {% if successful_upload %}
+                <h2 class="text-primary">Resultados del Reconocimiento</h2>
+                {% if celebrities %}
+                    <ul>
+                        {% for celebrity in celebrities %}
+                            <li>{{ celebrity }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No se encontraron celebridades reconocidas en la imagen.</p>
+                {% endif %}
+            {% else %}
+                <p>La carga no fue exitosa.</p>
+            {% endif %}
+        {% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 </body>
 </html>
