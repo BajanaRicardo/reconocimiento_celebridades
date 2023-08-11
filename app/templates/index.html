@@ -4,10 +4,19 @@
     <title>Reconocimiento de Celebridades</title>
 </head>
 <body>
-    <h1>Sube una imagen para reconocer celebridades</h1>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="image">
-        <input type="submit" value="Subir">
-    </form>
+    {% block content %}
+        {% if successful_upload %}
+            <p>Carga exitosa</p>
+            <p>Si quieres cargar otra imagen da click <a href="/upload">aquí</a>
+        {% else %}
+            <h2>Carga una imagen</h2>
+
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+            <label for="picture">Selecciona una imagen</label>
+            <input type="file" name="picture" accept="image/*">
+            <button type="submit">Cargar</button>
+            </form>
+        {% endif %}
+    {% endblock %}
 </body>
 </html>
