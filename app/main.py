@@ -1,11 +1,16 @@
+import logging
+import os
+
 from flask import Flask, render_template, request
-from google.cloud import vision
+import google.cloud.logging
+from google.cloud import firestore
+from google.cloud import storage
+
+client = google.cloud.logging.Client()
+client.get_default_handler()
+client.setup_logging()
 
 app = Flask(__name__)
-
-# Configura las credenciales de la API Cloud Vision (reemplaza 'ruta/a/tu/credencial.json' con la ubicación de tus propias credenciales)
-import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ruta/a/tu/credencial.json'
 
 @app.route('/')
 def index():
@@ -27,5 +32,13 @@ def upload():
 
     return render_template('result.html', faces=faces)
 
+@app.errorhandler(500)
+def server_error(e):
+    logging.exception('An error occurred during a request.')
+    return render_template('error.html'), 500
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,
+            host='0.0.0.0',
+            port=int(os.environ.get('PORT', 8080)))
+
