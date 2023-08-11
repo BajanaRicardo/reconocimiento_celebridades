@@ -9,8 +9,6 @@ from google.cloud import storage
 client = google.cloud.logging.Client()
 client.get_default_handler()
 client.setup_logging()
-
-client = storage.Client()
 vision_client = vision.ImageAnnotatorClient()
 
 app = Flask(__name__)
