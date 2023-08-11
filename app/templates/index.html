@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
     <title>Reconocimiento de Celebridades</title>
 </head>
 <body>
+    <div class="nav-rec">
+        <p class="titulo-arriba">Reconocimiento de Celebridades</p>
+    </div>
+    <div class="container">
     {% block content %}
         {% if successful_upload %}
-            <p>Carga exitosa</p>
+            <h2>Carga exitosa</h2>
             <p>Si quieres cargar otra imagen da click <a href="/upload">aquí</a>
         {% else %}
-            <h2>Carga una imagen</h2>
+            <h2>Carga una imagen de una celebridad</h2>
 
             <form method="POST" action="/upload" enctype="multipart/form-data">
             <label for="picture">Selecciona una imagen</label>
@@ -18,5 +26,6 @@
             </form>
         {% endif %}
     {% endblock %}
+</div>
 </body>
 </html>
