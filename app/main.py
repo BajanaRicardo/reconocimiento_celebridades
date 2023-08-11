@@ -40,10 +40,12 @@ def upload():
             image = vision.Image(content=uploaded_file.read())
             response = vision_client.face_detection(image=image)
 
-            for face in response.face_annotations:
-                for celebrity in face.recognized_celebrity:
+            for annotation in response.face_annotations:
+                for celebrity in annotation.celebrity_recognized:
                     celebrities.append(celebrity.name)
+
             return render_template('result.html', successful_upload=True, celebrities=celebrities)
+
         return render_template('index.html', successful_upload=False)
 
 @app.errorhandler(500)
