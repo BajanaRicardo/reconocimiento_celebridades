@@ -16,21 +16,28 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    image = request.files['image']
-    
-    # Inicializa el cliente de la API Cloud Vision
-    client = vision.ImageAnnotatorClient()
+    successful_upload = False
+    if request.method == 'POST':
+        uploaded_file = request.files.get('picture')
 
-    content = image.read()
-    image = vision.Image(content=content)
+        if uploaded_file:
+            gcs = storage.Client()
+            bucket = gcs.get_bucket(os.environ.get('BUCKET', 'my-bmd-bucket'))
+            blob = bucket.blob(uploaded_file.filename)
 
-    # Realiza la detección de celebridades
-    response = client.face_detection(image=image)
-    faces = response.face_annotations
+            blob.upload_from_string(
+                uploaded_file.read(),
+                content_type=uploaded_file.content_type
+            )
 
-    return render_template('result.html', faces=faces)
+            # Aquí podrías realizar el reconocimiento de famosos utilizando Google Vision AI si es necesario
+            # y luego almacenar los resultados en Firestore.
+
+            successful_upload = True
+
+    return render_template('index.html', successful_upload=successful_upload)
 
 @app.errorhandler(500)
 def server_error(e):
