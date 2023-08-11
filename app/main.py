@@ -5,6 +5,7 @@ from flask import Flask, render_template, request
 import google.cloud.logging
 from google.cloud import firestore
 from google.cloud import storage
+from google.cloud import vision
 
 client = google.cloud.logging.Client()
 client.get_default_handler()
